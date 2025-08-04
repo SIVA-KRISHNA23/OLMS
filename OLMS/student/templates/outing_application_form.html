@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+{% block title %}Outing Form{% endblock title%}
+
+{% block content %}
+<div class="container mt-5 p-4 shadow-lg rounded">
+    <h2 class="text-white mb-4">Outing Application Form</h2>
+    <form method="POST">
+        {% csrf_token %}
+        <div class="row mb-3">
+            <label for="outtime" class="col-sm-3 col-form-label text-white">OUT Time:</label>
+            <div class="col-sm-9">
+                <input type="time" class="form-control" id="outtime" name="outtime" placeholder="outtime" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="intime" class="col-sm-3 col-form-label text-white">IN Time:</label>
+            <div class="col-sm-9">
+                <input type="time" class="form-control" id="intime" name="intime" placeholder="intime" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="outdate" class="col-sm-3 col-form-label text-white">Date:</label>
+            <div class="col-sm-9">
+                <input type="date" class="form-control" id="outdate" name="outdate" placeholder="date" required>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label for="reason" class="col-sm-3 col-form-label text-white">REASON:</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="reason" name="reason" placeholder="Write your reason" style="height:200px" required></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-sm-9 offset-sm-3">
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<style>
+    body {
+        background-color: #f2f2f2;
+    }
+
+    .container {
+        background-image: linear-gradient(to right, #1e90ff, #00bfff); /* Blue gradient */
+        margin-top: 60px; /* Adjust this value as needed to add space between the navbar and the form */
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .form-control {
+        border-radius: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-primary {
+        background-color: #00bfff;
+        border-color: #00bfff;
+        transition: background-color 0.3s, border-color 0.3s;
+    }
+
+    .btn-primary:hover {
+        background-color: #1e90ff;
+        border-color: #1e90ff;
+    }
+
+    label {
+        color: white;
+    }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

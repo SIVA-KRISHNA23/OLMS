@@ -1,0 +1,101 @@
+{% extends "index.html" %}
+{% block title %}Security{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">QR Code Scanner</h1>
+    <div class="d-flex justify-content-center mb-4">
+        <button id="outingButton" class="btn btn-primary mr-2">Outing</button>
+        <button id="leaveButton" class="btn btn-secondary">Leave</button>
+    </div>
+    <div id="scannerContainer" class="d-flex justify-content-center mb-4" style="display: none;">
+        <div id="reader"
+            style="width: 300px; height: 300px; border: 1px solid #ddd; border-radius: 10px; padding: 20px; background-color: #f8f9fa;">
+        </div>
+    </div>
+    <p id="result" class="text-center text-success font-weight-bold"></p>
+</div>
+
+<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+<script>
+    let html5QrcodeScanner;
+    let selectedAction = '';
+
+    document.getElementById('outingButton').addEventListener('click', function () {
+        selectedAction = 'Outing';
+        highlightButton('outingButton');
+        document.getElementById('scannerContainer').style.display = 'block';
+        startScanner();
+    });
+
+    document.getElementById('leaveButton').addEventListener('click', function () {
+        selectedAction = 'Leave';
+        highlightButton('leaveButton');
+        document.getElementById('scannerContainer').style.display = 'block';
+        startScanner();
+    });
+
+    function highlightButton(buttonId) {
+        document.getElementById('outingButton').classList.remove('btn-primary');
+        document.getElementById('outingButton').classList.add('btn-secondary');
+        document.getElementById('leaveButton').classList.remove('btn-primary');
+        document.getElementById('leaveButton').classList.add('btn-secondary');
+
+        document.getElementById(buttonId).classList.remove('btn-secondary');
+        document.getElementById(buttonId).classList.add('btn-primary');
+    }
+
+    function startScanner() {
+        if (html5QrcodeScanner) {
+            html5QrcodeScanner.clear().then(_ => {
+                console.log("Previous scanning session cleared.");
+                initializeScanner();
+            }).catch(error => {
+                console.error("Failed to clear previous scanning session.", error);
+            });
+        } else {
+            initializeScanner();
+        }
+    }
+
+    function initializeScanner() {
+        html5QrcodeScanner = new Html5QrcodeScanner(
+            "reader", { fps: 10, qrbox: { width: 250, height: 250 } });
+
+        html5QrcodeScanner.render(onScanSuccess, onScanError);
+    }
+
+    function onScanSuccess(decodedText, decodedResult) {
+        // Disable the scanner immediately after a successful scan
+        html5QrcodeScanner.pause();
+        fetch('{% url "qr_code_scanner" %}', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            body: JSON.stringify({ scanned_data: decodedText, action: selectedAction })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === 'success' && data.redirect) {
+                let url = `{% url 'user_details' 'email_placeholder' %}`.replace('email_placeholder', encodeURIComponent(data.email));
+                url += `?additional_info=${encodeURIComponent(data.additional_info)}`;
+                window.location.href = url;
+            } else {
+                alert(data.message);
+            }
+            // Re-enable the scanner after handling the response
+            html5QrcodeScanner.resume();
+        })
+        .catch(error => {
+            console.error('Error during scanning:', error);
+            // Re-enable the scanner in case of error
+            html5QrcodeScanner.resume();
+        });
+    }
+
+    function onScanError(errorMessage) {
+        console.error("Scan error:", errorMessage);
+    }
+</script>
+{% endblock %}

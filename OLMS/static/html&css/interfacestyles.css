@@ -1,0 +1,94 @@
+/* styles.css */
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.navbar {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    justify-content: space-between;
+    width: 100%;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+}
+
+.navbar h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.navbar span {
+    cursor: pointer;
+}
+
+.navbar-toggler {
+    border: none;
+    background: transparent;
+    color: white;
+    font-size: 24px;
+}
+
+.left-frame {
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    width: 200px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+    display: none; /* Initially hidden */
+}
+
+.left-frame ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.left-frame li {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.left-frame li:hover {
+    background-color: #e9ecef;
+}
+
+.left-frame li.active,
+.left-frame li a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.left-frame li.active:hover {
+    background-color: #007bff;
+    color: white;
+}
+
+.left-frame li a:hover {
+    text-decoration: none;
+}
+
+.chat-container {
+    margin-top: 60px;
+    padding: 20px;
+    margin-left: 200px; /* Adjusted margin to accommodate the left frame */
+    margin-right: 20px; /* Adjusted margin to prevent content from being hidden */
+    overflow: auto; /* Added overflow auto to handle content overflow */
+}
+
+#iframe-content {
+    width: 100%;
+    height: calc(100vh - 60px - 40px); /* Adjusted height to fit within container */
+    border: none;
+}

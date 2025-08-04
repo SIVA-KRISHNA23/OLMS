@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Warden{% endblock title %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container">
+  <div class="row mt-5 justify-content-center">
+    <div class="col-lg-4 mb-4">
+      <div class="text-center">
+        <img src="{% static 'images/Leave image.jpg' %}" alt="Leave image" class="rounded mx-auto d-block" width="360" height="250">
+      </div>
+      <div class="text-center">
+        <a href="{% url 'show-all-leaves' %}">
+          <button type="button" class="btn btn-primary mt-3">
+            Leave Requests
+          </button>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="text-center">
+        <img src="{% static 'images/Outing image.jpg' %}" alt="Outing image" class="rounded mx-auto d-block shadow-sm" width="360" height="250">
+      </div>
+      <div class="text-center">
+        <a href="{% url 'show-all-outings' %}">
+          <button type="button" class="btn btn-success mt-3">
+            Outing Requests
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

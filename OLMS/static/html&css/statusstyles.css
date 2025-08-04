@@ -1,0 +1,12 @@
+ 
+        /* Custom CSS for black table */
+        .black-table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        .black-table th, .black-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+    

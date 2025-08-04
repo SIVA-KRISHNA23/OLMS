@@ -1,0 +1,141 @@
+{% extends "index.html" %}
+
+{% block title %}
+All Leaves
+{% endblock title %}
+
+{% block content %}
+<br>
+<label for="start-date">Start Date:</label>
+<input type="date" id="start-date" value="{{ request.GET.start_date }}">
+<label for="end-date">End Date:</label>
+<input type="date" id="end-date" value="{{ request.GET.end_date }}">
+<button id="filter-btn" class="btn btn-primary">Filter</button>
+
+<br><br>
+<div style="overflow-x: auto;">
+    <table class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Student</th>
+                <th>ID</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Reason</th>
+                <th>Leaves per Month</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>First Scan</th>
+                <th>Last Scan</th>
+            </tr>
+        </thead>
+        <tbody id="leave-list">
+            {% for leave in leaves %}
+            <tr id="leave_{{ leave.id }}"
+                class="{% if leave.status == 'Approved' %}table-success{% elif leave.status == 'Declined' %}table-danger{% endif %}"
+                data-start-date="{{ leave.start_date }}" data-end-date="{{ leave.end_date }}">
+                <td>{{ leave.user.first_name }} {{leave.user.last_name}}</td>
+                <td>{{ leave.user.username }}</td>
+                <td>{{ leave.start_date }}</td>
+                <td>{{ leave.end_date }}</td>
+                <td>{{ leave.reason }}</td>
+                <td>{{ leave.leaves_per_month }}</td>
+                <td id="status_{{ leave.id }}">{{ leave.status }}</td>
+                <td>
+                    <button onclick="approveLeave('{{ leave.id }}')" class="btn btn-success">Approve</button>
+                    <button onclick="disapproveLeave('{{ leave.id }}')" class="btn btn-danger">Decline</button>
+                </td>
+                <td>{{ leave.first_scan_time }}</td>
+                <td>{{ leave.last_scan_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" href="?pg=1&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}"><<</a>
+        </li>
+        {% if leaves.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?pg={{ leaves.previous_page_number }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">
+                    {{ leaves.previous_page_number }}
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item active">
+            <a class="page-link" href="?pg={{ leaves.number }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}" style="background-color: #007bff; color: white;">
+                {{ leaves.number }}
+            </a>
+        </li>
+        {% if leaves.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?pg={{ leaves.next_page_number }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">
+                    {{ leaves.next_page_number }}
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link" href="?pg={{ leaves.paginator.num_pages }}&start_date={{ request.GET.start_date }}&end_date={{ request.GET.end_date }}">>></a>
+        </li>
+    </ul>
+</nav>
+
+<style>
+    /* Add styles to prevent text from wrapping */
+    table th, table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<script>
+    function handleLeaveAction(leaveId, action) {
+        fetch('{% url "update-leave" %}', {
+            method: 'POST',
+            body: JSON.stringify({ leave_id: leaveId, action: action }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Email sent Successfully");
+                document.getElementById('status_' + leaveId).innerText = data.status;
+                const row = document.getElementById('leave_' + leaveId);
+                if (data.status === 'Approved') {
+                    row.className = 'table-success';
+                } else if (data.status === 'Declined') {
+                    row.className = 'table-danger';
+                } else {
+                    row.className = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function approveLeave(leaveId) {
+        handleLeaveAction(leaveId, 'approve');
+    }
+
+    function disapproveLeave(leaveId) {
+        handleLeaveAction(leaveId, 'disapprove');
+    }
+
+    document.getElementById('filter-btn').addEventListener('click', () => {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        const urlParams = new URLSearchParams(window.location.search);
+        urlParams.set('start_date', startDate);
+        urlParams.set('end_date', endDate);
+        window.location.search = urlParams.toString();
+    });
+</script>
+{% endblock %}

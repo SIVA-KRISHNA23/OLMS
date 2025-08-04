@@ -1,0 +1,33 @@
+{% extends "index.html" %}
+{% block title %}Scanned Today{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Scanned Today</h1>
+    <table class="table table-bordered">
+        <thead>
+            <tr class="table-dark">
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Scan Date</th>
+                <th>Scan Time</th>
+                <th>Status</th>
+                <th>Leave/Outing</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for entry in entries_today %}
+                <tr>
+                    <td>{{ entry.user.username }}</td>
+                    <td>{{ entry.user.first_name }} {{ entry.user.last_name }}</td>
+                    <td>{{ entry.user.email }}</td>
+                    <td>{{ entry.scan_time|date:"Y-m-d" }}</td>
+                    <td>{{ entry.scan_time|time:"H:i:s" }}</td>
+                    <td>{{ entry.status }}</td>
+                    <td>{{ entry.type }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,143 @@
+{% extends "index.html" %}
+
+{% block title %}
+All Outings
+{% endblock %}
+
+{% block content %}
+<br>
+<label for="start-date">Start Date:</label>
+<input type="date" id="start-date">
+<label for="end-date">End Date:</label>
+<input type="date" id="end-date">
+<button id="filter-btn" class="btn btn-primary">Filter</button>
+
+<br><br>
+<div style="overflow-x: auto;">
+    <table id="outings-table" class="table table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>Student</th>
+                <th>ID</th>
+                <th>Out Time</th>
+                <th>In Time</th>
+                <th>Out Date</th>
+                <th>Reason</th>
+                <th>Number</th>
+                <th>Status</th>
+                <th>Action</th>
+                <th>First Scan</th>
+                <th>Last Scan</th>
+            </tr>
+        </thead>
+        <tbody id="outing-list">
+            {% for outing in outings %}
+            <tr id="outing_{{ outing.id }}"
+                class="{% if outing.status == 'Approved' %}table-success{% elif outing.status == 'Declined' %}table-danger{% endif %}"
+                data-out-date="{{ outing.out_date }}">
+                <td>{{ outing.user.first_name }} {{outing.user.last_name}}</td>
+                <td>{{ outing.user.username }}</td>
+                <td>{{ outing.out_time }}</td>
+                <td>{{ outing.in_time }}</td>
+                <td>{{ outing.out_date }}</td>
+                <td>{{ outing.reason }}</td>
+                <td>{{ outing.outings_per_month }}</td>
+                <td id="status_{{ outing.id }}">{{ outing.status }}</td>
+                <td>
+                    <button onclick="approveOuting('{{ outing.id }}')" class="btn btn-success">Approve</button>
+                    <button onclick="disapproveOuting('{{ outing.id }}')" class="btn btn-danger">Decline</button>
+                </td>
+                <td>{{ outing.first_scan_time }}</td>
+                <td>{{ outing.last_scan_time }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Pagination -->
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-end">
+        <li class="page-item">
+            <a class="page-link" href="?pg=1"><<</a>
+        </li>
+        {% if outings.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?pg={{ outings.previous_page_number }}">
+                    {{ outings.previous_page_number }}
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item active">
+            <a class="page-link" href="?pg={{ outings.number }}" style="background-color: #007bff; color: white;">
+                {{ outings.number }}
+            </a>
+        </li>
+        {% if outings.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?pg={{ outings.next_page_number }}">
+                    {{ outings.next_page_number }}
+                </a>
+            </li>
+        {% endif %}
+        <li class="page-item">
+            <a class="page-link" href="?pg={{ outings.paginator.num_pages }}">>></a>
+        </li>
+    </ul>
+</nav>
+
+<style>
+    /* Add styles to prevent text from wrapping */
+    table th, table td {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+</style>
+
+<script>
+    function handleOutingAction(outingId, action) {
+        fetch('{% url "update-outing" %}', {
+            method: 'POST',
+            body: JSON.stringify({ outing_id: outingId, action: action }),
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("Email sent Successfully");
+                document.getElementById('status_' + outingId).innerText = data.status;
+                const row = document.getElementById('outing_' + outingId);
+                if (data.status === 'Approved') {
+                    row.className = 'table-success';
+                } else if (data.status === 'Declined') {
+                    row.className = 'table-danger';
+                } else {
+                    row.className = '';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
+    function approveOuting(outingId) {
+        handleOutingAction(outingId, 'approve');
+    }
+
+    function disapproveOuting(outingId) {
+        handleOutingAction(outingId, 'disapprove');
+    }
+
+    document.getElementById('filter-btn').addEventListener('click', () => {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        const url = new URL(window.location.href);
+        url.searchParams.set('start_date', startDate);
+        url.searchParams.set('end_date', endDate);
+        window.location.href = url.toString();
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="formstyles.css">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Outing Application Form</h2>
+        <form method="post" novalidate>
+            <div class="row mb-3">
+                <label for="outdate" class="col-sm-3 col-form-label">OUT DATE :</label>
+                <div class="col-sm-9">
+                    <input type="date" class="form-control" id="outdate" name="outdate" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid out date in the format YYYY-MM-DD.
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="outtime" class="col-sm-3 col-form-label">OUT TIME :</label>
+                <div class="col-sm-9">
+                    <input type="time" class="form-control" id="outtime" name="outtime" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid out time in the format HH:MM (24-hour).
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="intime" class="col-sm-3 col-form-label">IN TIME :</label>
+                <div class="col-sm-9">
+                    <input type="time" class="form-control" id="intime" name="intime" required>
+                    <div class="invalid-feedback">
+                        Please provide a valid in time in the format HH:MM (24-hour).
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="reason" class="col-sm-3 col-form-label">REASON :</label>
+                <div class="col-sm-9">
+                    <select class="form-select" id="reason" name="reason" required>
+                        <option value="">Select a reason for outing</option>
+                        <option value="Festival">Festival</option>
+                        <option value="Compitative Exam">Compitative Exam</option>
+                        <option value="Medical Appointment">Medical Appointment</option>
+                        <option value="Personal Errand">Personal Errand</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a reason for outing.
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-9 offset-sm-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function validateForm() {
+            var outdateInput = document.getElementById("outdate");
+            var outtimeInput = document.getElementById("outtime");
+            var intimeInput = document.getElementById("intime");
+            var reasonInput = document.getElementById("reason");
+
+            // Regular expressions for date and time formats
+            var datePattern = /^\d{4}-\d{2}-\d{2}$/;
+            var timePattern = /^(?:2[0-3]|[01][0-9]):[0-5][0-9]$/;
+
+            // Validate out date
+            if (!datePattern.test(outdateInput.value)) {
+                outdateInput.classList.add("is-invalid");
+                return false;
+            } else {
+                outdateInput.classList.remove("is-invalid");
+            }
+
+            // Validate out time
+            if (!timePattern.test(outtimeInput.value)) {
+                outtimeInput.classList.add("is-invalid");
+                return false;
+            } else {
+                outtimeInput.classList.remove("is-invalid");
+            }
+
+            // Validate in time
+            if (!timePattern.test(intimeInput.value)) {
+                intimeInput.classList.add("is-invalid");
+                return false;
+            } else {
+                intimeInput.classList.remove("is-invalid");
+            }
+
+            // Validate reason
+            if (reasonInput.value === "") {
+                reasonInput.classList.add("is-invalid");
+                return false;
+            } else {
+                reasonInput.classList.remove("is-invalid");
+            }
+
+            return true;
+        }
+
+        document.querySelector("form").addEventListener("submit", function(event) {
+            if (!validateForm()) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    </script>
+</body>
+
+</html>

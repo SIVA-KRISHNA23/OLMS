@@ -1,0 +1,32 @@
+{% extends "index.html" %}
+
+{% block title %}
+login
+{% endblock %}
+
+{% block content %}
+
+<br>
+<table class="table table-bordered text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>Out Time</th>
+            <th>In Time</th>
+            <th>Reason</th>
+            <th>status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for outing in outings %}
+        <tr class="{% if outing.status == 'Approved' %}table-success{% elif outing.status == 'Declined' %}table-danger{% else %}table-warning{% endif %}">
+            <td>{{ outing.in_time }}</td>
+            <td>{{ outing.out_time }}</td>
+            <td>{{ outing.reason }}</td>
+            <td>{{outing.status}}</td>
+            
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

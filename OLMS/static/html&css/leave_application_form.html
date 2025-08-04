@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="formstyles.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <h2>Leave Application Form</h2>
+        <form id="leaveForm" novalidate>
+            <div class="row mb-3">
+                <label for="outdate" class="col-sm-3 col-form-label">OUT DATE :</label>
+                <div class="col-sm-9">
+                    <input type="date" class="form-control" id="outdate" name="outdate">
+                    <div class="invalid-feedback" id="outdateError">
+                        Please provide a valid out date.
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="indate" class="col-sm-3 col-form-label">IN DATE :</label>
+                <div class="col-sm-9">
+                    <input type="date" class="form-control" id="indate" name="indate">
+                    <div class="invalid-feedback" id="indateError">
+                        Please provide a valid in date.
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="attachment" class="col-sm-3 col-form-label">ATTACHMENT :</label>
+                <div class="col-sm-9">
+                    <input type="file" class="form-control" id="attachment" name="attachment">
+                    <div class="invalid-feedback" id="attachmentError">
+                        Please attach a file.
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="reason" class="col-sm-3 col-form-label">REASON :</label>
+                <div class="col-sm-9">
+                    <select class="form-select" id="reason" name="reason" required>
+                        <option value="">Select a reason for outing</option>
+                        <option value="Festival">Festival</option>
+                        <option value="Compitative Exam">Compitative Exam</option>
+                        <option value="Medical Appointment">Medical Appointment</option>
+                        <option value="Personal Errand">Personal Errand</option>
+                        <option value="Meeting">Meeting</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <div class="invalid-feedback">
+                        Please provide a reason for leave.
+                    </div>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-sm-9 offset-sm-3">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.getElementById("leaveForm").addEventListener("submit", function (event) {
+            // Prevent form submission
+            event.preventDefault();
+
+            // Validate form inputs
+            var outdate = document.getElementById("outdate").value;
+            var indate = document.getElementById("indate").value;
+            var attachment = document.getElementById("attachment").value;
+            var reason = document.getElementById("reason").value;
+
+            // Reset all error messages
+            document.getElementById("outdateError").style.display = "none";
+            document.getElementById("indateError").style.display = "none";
+            document.getElementById("attachmentError").style.display = "none";
+            document.getElementById("reasonError").style.display = "none";
+
+            // Validate out date
+            if (!outdate) {
+                document.getElementById("outdateError").style.display = "block";
+                return;
+            }
+
+            // Validate in date
+            if (!indate) {
+                document.getElementById("indateError").style.display = "block";
+                return;
+            }
+
+            // Validate attachment
+            if (!attachment) {
+                document.getElementById("attachmentError").style.display = "block";
+                return;
+            }
+
+            // Validate reason
+            if (!reason.trim()) {
+                document.getElementById("reasonError").style.display = "block";
+                return;
+            }
+
+            // If all validations pass, submit the form
+            this.submit();
+        });
+    </script>
+</body>
+
+</html>

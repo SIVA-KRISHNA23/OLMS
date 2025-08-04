@@ -1,0 +1,84 @@
+{% extends "index.html" %}
+{% block title %}Leave Form{% endblock title%}
+
+{% block content %}
+<div class="container mt-5 p-4 shadow-lg rounded">
+  <h2 class="text-white mb-4">Leave Application Form</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row mb-3">
+      <label for="outdate" class="col-sm-3 col-form-label text-white">OUT DATE:</label>
+      <div class="col-sm-9">
+        <input type="date" class="form-control" id="outdate" name="outdate" placeholder="outdate" required>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="indate" class="col-sm-3 col-form-label text-white">IN DATE:</label>
+      <div class="col-sm-9">
+        <input type="date" class="form-control" id="indate" name="indate" placeholder="indate" required>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="attachment" class="col-sm-3 col-form-label text-white">ATTACHMENT:</label>
+      <div class="col-sm-9">
+        <input type="file" class="form-control" id="attachment" name="attachment" placeholder="choose file">
+      </div>
+    </div>
+    <div class="row mb-3">
+      <label for="reason" class="col-sm-3 col-form-label text-white">REASON:</label>
+      <div class="col-sm-9">
+        <textarea class="form-control" id="reason" name="reason" placeholder="Write your reason" style="height:200px" required></textarea>
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-sm-9 offset-sm-3">
+        <button type="submit" class="btn btn-primary w-100">Submit</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<style>
+  body {
+    background-color: #f2f2f2;
+  }
+
+  .container {
+    background-image: linear-gradient(to right, #5c7c89, #1f4959);
+    margin-top: 60px; /* Adjust this value as needed to add space between the navbar and the form */
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  }
+
+  .form-control {
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .btn-primary {
+    background-color: #1f4959;
+    border-color: #1f4959;
+    transition: background-color 0.3s, border-color 0.3s;
+  }
+
+  .btn-primary:hover {
+    background-color: #5c7c89;
+    border-color: #5c7c89;
+  }
+
+  label {
+    color: white;
+  }
+
+  input[type="file"] {
+    padding: 5px;
+  }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+{% endblock %}

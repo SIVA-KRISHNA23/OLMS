@@ -1,0 +1,36 @@
+{% extends 'index.html' %}
+{% load static %}
+
+{% block title %}Student{% endblock title %}
+
+{% block content %}
+<br><br><br><br>
+<div class="container">
+  <div class="row mt-5 justify-content-center">
+    <div class="col-lg-4 mb-4">
+      <div class="text-center">
+        <img src="{% static 'images/Leave image.jpg' %}" alt="Leave image" class="rounded mx-auto d-block img-fluid shadow-lg border border-primary" style="max-width: 360px; height: auto;">
+      </div>
+      <div class="text-center">
+        <a href="{% url 'leave' %}">
+          <button type="button" class="btn btn-primary mt-3">
+            Apply For Leave
+          </button>
+        </a>
+      </div>
+    </div>
+    <div class="col-lg-4 mb-4">
+      <div class="text-center">
+        <img src="{% static 'images/Outing image.jpg' %}" alt="Outing image" class="rounded mx-auto d-block img-fluid shadow-sm border border-success" style="max-width: 360px; height: auto;">
+      </div>
+      <div class="text-center">
+        <a href="{% url 'outing' %}">
+          <button type="button" class="btn btn-success mt-3">
+            Apply for Outing
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

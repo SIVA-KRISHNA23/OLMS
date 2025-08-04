@@ -1,0 +1,29 @@
+{% extends "index.html" %}
+
+{% block title %}
+Leaves
+{% endblock %}
+
+{% block content %}
+<br>
+<table class="table table-bordered text-center">
+    <thead class="table-dark">
+        <tr>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Reason</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for leave in leaves %}
+        <tr class="{% if leave.status == 'Approved' %}table-success{% elif leave.status == 'Declined' %}table-danger{% endif %}">
+            <td>{{ leave.start_date }}</td>
+            <td>{{ leave.end_date }}</td>
+            <td>{{ leave.reason }}</td>
+            <td>{{ leave.status }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

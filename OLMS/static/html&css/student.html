@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OLMS</title>
+    <!-- External CSS -->
+    <link rel="stylesheet" href="interfacestyles.css">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="navbar">
+        <span class="navbar-toggler" onclick="toggleLeftFrame()">&#9776;</span>
+        <h1>OLMS</h1>
+        <span onclick="location.href='#student_details'">Student Profile</span>
+    </div>
+
+    <div class="left-frame" id="left-frame-menu">
+        <ul>
+            <li class="active"><a href="#"></a></li>
+            <li><a href="leave_application_form.html" target="iframe-content">Apply for Leave</a></li>
+            <li><a href="outing_application_form.html" target="iframe-content">Apply for Outing</a></li>
+            <li><a href="leave.html" target="iframe-content">Leave Details</a></li>
+            <li><a href="outing.html" target="iframe-content">Outing Details</a></li>
+            <li><a href="#" target="iframe-content">Instructions</a></li>
+        </ul>
+    </div>
+
+    <div class="chat-container">
+        <iframe id="iframe-content" name="iframe-content" src="" frameborder="0"></iframe>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function toggleLeftFrame() {
+            var leftFrame = document.getElementById("left-frame-menu");
+            leftFrame.style.display = leftFrame.style.display === "none" ? "block" : "none";
+        }
+
+        function loadForm(url) {
+            document.getElementById("iframe-content").src = url;
+        }
+    </script>
+
+</body>
+
+</html>
+
+
